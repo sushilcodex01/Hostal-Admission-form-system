@@ -2,6 +2,10 @@
 
 A comprehensive hostel admission management system with enterprise-level admin panel, advanced PDF generation, live photo capture, digital signatures, secure Telegram integration, and Notion database connectivity for seamless application processing.
 
+## Demo = https://na-szqw.onrender.com
+
+## 🚀 Replit link  = https://replit.com/@doloyil618/HostelEnroll
+
 ## 🚀 Key Features
 
 ### Student Application System
