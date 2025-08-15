@@ -1,0 +1,457 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Panel - Navadaya Girls Hostel</title>
+    <link rel="stylesheet" href="/css/admin.css">
+    <link rel="stylesheet" href="/css/animations.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <!-- Loading Screen -->
+    <div id="loadingScreen" class="loading-screen">
+        <div class="loading-spinner">
+            <div class="spinner"></div>
+            <p>Loading Admin Panel...</p>
+        </div>
+    </div>
+
+    <!-- Main Admin Container -->
+    <div id="adminContainer" class="admin-container" style="display: none;">
+        <!-- Sidebar -->
+        <nav class="sidebar">
+            <div class="sidebar-header">
+                <div class="logo">
+                    <i class="fas fa-building"></i>
+                    <span>Admin Panel</span>
+                </div>
+                <button class="sidebar-toggle" id="sidebarToggle">
+                    <i class="fas fa-bars"></i>
+                </button>
+            </div>
+
+            <div class="sidebar-menu">
+                <ul class="menu-items">
+                    <li class="menu-item active" data-section="dashboard">
+                        <i class="fas fa-chart-pie"></i>
+                        <span>Dashboard</span>
+                    </li>
+                    <li class="menu-item" data-section="applications">
+                        <i class="fas fa-users"></i>
+                        <span>Applications</span>
+                        <span class="badge" id="applicationCount">0</span>
+                    </li>
+                    <li class="menu-item" data-section="students">
+                        <i class="fas fa-user-graduate"></i>
+                        <span>Students</span>
+                    </li>
+                    <li class="menu-item" data-section="analytics">
+                        <i class="fas fa-chart-line"></i>
+                        <span>Analytics</span>
+                    </li>
+                    <li class="menu-item" data-section="settings">
+                        <i class="fas fa-cog"></i>
+                        <span>Settings</span>
+                    </li>
+                </ul>
+            </div>
+
+            <div class="sidebar-footer">
+                <div class="user-profile">
+                    <div class="avatar">
+                        <i class="fas fa-user-shield"></i>
+                    </div>
+                    <div class="user-info">
+                        <span class="name">Admin</span>
+                        <span class="role">Super Admin</span>
+                    </div>
+                </div>
+            </div>
+        </nav>
+
+        <!-- Main Content -->
+        <main class="main-content">
+            <!-- Header -->
+            <header class="header">
+                <div class="header-left">
+                    <h1 id="pageTitle">Dashboard</h1>
+                    <div class="breadcrumb">
+                        <span>Home</span>
+                        <i class="fas fa-chevron-right"></i>
+                        <span id="currentSection">Dashboard</span>
+                    </div>
+                </div>
+                <div class="header-right">
+                    <button class="btn btn-primary" id="refreshData">
+                        <i class="fas fa-sync-alt"></i>
+                        Refresh
+                    </button>
+                    <div class="notification-bell">
+                        <i class="fas fa-bell"></i>
+                        <span class="notification-count">3</span>
+                    </div>
+                    <div class="theme-toggle">
+                        <button id="themeToggle">
+                            <i class="fas fa-moon"></i>
+                        </button>
+                    </div>
+                </div>
+            </header>
+
+            <!-- Content Sections -->
+            <div class="content-wrapper">
+                <!-- Dashboard Section -->
+                <section id="dashboard" class="content-section active">
+                    <div class="stats-grid">
+                        <div class="stat-card">
+                            <div class="stat-icon blue">
+                                <i class="fas fa-users"></i>
+                            </div>
+                            <div class="stat-content">
+                                <h3 id="totalApplications">0</h3>
+                                <p>Total Applications</p>
+                                <span class="stat-change positive">+12%</span>
+                            </div>
+                        </div>
+                        <div class="stat-card">
+                            <div class="stat-icon green">
+                                <i class="fas fa-check-circle"></i>
+                            </div>
+                            <div class="stat-content">
+                                <h3 id="approvedApplications">0</h3>
+                                <p>Approved</p>
+                                <span class="stat-change positive">+8%</span>
+                            </div>
+                        </div>
+                        <div class="stat-card">
+                            <div class="stat-icon orange">
+                                <i class="fas fa-clock"></i>
+                            </div>
+                            <div class="stat-content">
+                                <h3 id="pendingApplications">0</h3>
+                                <p>Pending Review</p>
+                                <span class="stat-change neutral">--</span>
+                            </div>
+                        </div>
+                        <div class="stat-card">
+                            <div class="stat-icon red">
+                                <i class="fas fa-times-circle"></i>
+                            </div>
+                            <div class="stat-content">
+                                <h3 id="rejectedApplications">0</h3>
+                                <p>Rejected</p>
+                                <span class="stat-change negative">-3%</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="dashboard-grid">
+                        <div class="dashboard-card">
+                            <div class="card-header">
+                                <h3>Recent Applications</h3>
+                                <button class="btn btn-sm">View All</button>
+                            </div>
+                            <div class="card-content">
+                                <div id="recentApplicationsList" class="applications-list">
+                                    <!-- Dynamic content -->
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="dashboard-card">
+                            <div class="card-header">
+                                <h3>Application Status Chart</h3>
+                                <div class="chart-period">
+                                    <select id="chartPeriod">
+                                        <option value="7">Last 7 days</option>
+                                        <option value="30">Last 30 days</option>
+                                        <option value="90">Last 3 months</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="card-content">
+                                <canvas id="statusChart" width="400" height="200"></canvas>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Applications Section -->
+                <section id="applications" class="content-section">
+                    <div class="section-header">
+                        <div class="section-controls">
+                            <div class="search-box">
+                                <i class="fas fa-search"></i>
+                                <input type="text" id="applicationSearch" placeholder="Search by name, room number, phone, email...">
+                                <button type="button" class="search-clear" id="clearSearch" title="Clear search">
+                                    <i class="fas fa-times"></i>
+                                </button>
+                            </div>
+                            <div class="search-results" id="searchResults" style="display: none;">
+                                <span id="searchResultsText"></span>
+                            </div>
+                            <div class="filter-controls">
+                                <select id="statusFilter">
+                                    <option value="">All Status</option>
+                                    <option value="Pending Review">Pending Review</option>
+                                    <option value="Approved">Approved</option>
+                                    <option value="Rejected">Rejected</option>
+                                </select>
+                                <select id="sortBy">
+                                    <option value="submission_date">Sort by Date</option>
+                                    <option value="name">Sort by Name</option>
+                                    <option value="status">Sort by Status</option>
+                                </select>
+                            </div>
+                            <button class="btn btn-export" id="exportApplications">
+                                <i class="fas fa-download"></i>
+                                Export
+                            </button>
+                        </div>
+                    </div>
+
+                    <div class="applications-table-container">
+                        <table class="applications-table" id="applicationsTable">
+                            <thead>
+                                <tr>
+                                    <th>
+                                        <input type="checkbox" id="selectAll">
+                                    </th>
+                                    <th>Student Name</th>
+                                    <th>Email</th>
+                                    <th>Phone</th>
+                                    <th>Room</th>
+                                    <th>Status</th>
+                                    <th>Submission Date</th>
+                                    <th>Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody id="applicationsTableBody">
+                                <!-- Dynamic content -->
+                            </tbody>
+                        </table>
+                    </div>
+
+                    <div class="pagination">
+                        <button class="btn btn-sm" id="prevPage" disabled>
+                            <i class="fas fa-chevron-left"></i>
+                            Previous
+                        </button>
+                        <span class="pagination-info" id="paginationInfo">
+                            Page 1 of 1
+                        </span>
+                        <button class="btn btn-sm" id="nextPage" disabled>
+                            Next
+                            <i class="fas fa-chevron-right"></i>
+                        </button>
+                    </div>
+                </section>
+
+                <!-- Students Section -->
+                <section id="students" class="content-section">
+                    <div class="section-header">
+                        <h2>Student Management</h2>
+                        <button class="btn btn-primary" id="addStudent">
+                            <i class="fas fa-plus"></i>
+                            Add Student
+                        </button>
+                    </div>
+                    <div class="students-grid" id="studentsGrid">
+                        <!-- Dynamic content -->
+                    </div>
+                </section>
+
+                <!-- Analytics Section -->
+                <section id="analytics" class="content-section">
+                    <div class="analytics-header">
+                        <h2>Analytics & Reports</h2>
+                        <div class="date-range-picker">
+                            <input type="date" id="startDate">
+                            <span>to</span>
+                            <input type="date" id="endDate">
+                            <button class="btn btn-primary" id="applyDateRange">Apply</button>
+                        </div>
+                    </div>
+
+                    <div class="analytics-grid">
+                        <div class="analytics-card">
+                            <div class="card-header">
+                                <h3>Application Trends</h3>
+                            </div>
+                            <div class="card-content">
+                                <canvas id="trendsChart"></canvas>
+                            </div>
+                        </div>
+
+                        <div class="analytics-card">
+                            <div class="card-header">
+                                <h3>Status Distribution</h3>
+                            </div>
+                            <div class="card-content">
+                                <canvas id="distributionChart"></canvas>
+                            </div>
+                        </div>
+
+                        <div class="analytics-card">
+                            <div class="card-header">
+                                <h3>Monthly Summary</h3>
+                            </div>
+                            <div class="card-content">
+                                <div class="summary-stats">
+                                    <!-- Dynamic content -->
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Settings Section -->
+                <section id="settings" class="content-section">
+                    <div class="settings-container">
+                        <div class="settings-sidebar">
+                            <ul class="settings-menu">
+                                <li class="active" data-tab="general">General</li>
+                                <li data-tab="notifications">Notifications</li>
+                                <li data-tab="database">Database</li>
+                                <li data-tab="security">Security</li>
+                            </ul>
+                        </div>
+
+                        <div class="settings-content">
+                            <div class="settings-tab active" id="general">
+                                <h3>General Settings</h3>
+                                <div class="setting-group">
+                                    <label>Application Auto-Approval</label>
+                                    <div class="toggle-switch">
+                                        <input type="checkbox" id="autoApproval">
+                                        <span class="slider"></span>
+                                    </div>
+                                </div>
+                                <div class="setting-group">
+                                    <label>Email Notifications</label>
+                                    <div class="toggle-switch">
+                                        <input type="checkbox" id="emailNotifications" checked>
+                                        <span class="slider"></span>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="settings-tab" id="notifications">
+                                <h3>Notification Settings</h3>
+                                <div class="setting-group">
+                                    <label>Email Alerts for New Applications</label>
+                                    <div class="toggle-switch">
+                                        <input type="checkbox" id="emailAlerts" checked>
+                                        <span class="slider"></span>
+                                    </div>
+                                </div>
+                                <div class="setting-group">
+                                    <label>Desktop Notifications</label>
+                                    <div class="toggle-switch">
+                                        <input type="checkbox" id="desktopNotifications">
+                                        <span class="slider"></span>
+                                    </div>
+                                </div>
+                                <div class="setting-group">
+                                    <label>SMS Notifications</label>
+                                    <div class="toggle-switch">
+                                        <input type="checkbox" id="smsNotifications">
+                                        <span class="slider"></span>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="settings-tab" id="database">
+                                <h3>Database Settings</h3>
+                                <div class="setting-group">
+                                    <label>Database Connection Status</label>
+                                    <div class="connection-status">
+                                        <span class="status-indicator" id="dbStatus">Checking...</span>
+                                        <button class="btn btn-sm btn-primary" id="testConnection">Test Connection</button>
+                                    </div>
+                                </div>
+                                <div class="setting-group">
+                                    <label>Auto-backup Frequency</label>
+                                    <select id="backupFrequency">
+                                        <option value="daily">Daily</option>
+                                        <option value="weekly" selected>Weekly</option>
+                                        <option value="monthly">Monthly</option>
+                                        <option value="never">Never</option>
+                                    </select>
+                                </div>
+                                <div class="setting-group">
+                                    <label>Data Retention Period</label>
+                                    <select id="retentionPeriod">
+                                        <option value="6months">6 Months</option>
+                                        <option value="1year" selected>1 Year</option>
+                                        <option value="2years">2 Years</option>
+                                        <option value="permanent">Permanent</option>
+                                    </select>
+                                </div>
+                            </div>
+
+                            <div class="settings-tab" id="security">
+                                <h3>Security Settings</h3>
+                                <div class="setting-group">
+                                    <label>Two-Factor Authentication</label>
+                                    <div class="toggle-switch">
+                                        <input type="checkbox" id="twoFactorAuth">
+                                        <span class="slider"></span>
+                                    </div>
+                                </div>
+                                <div class="setting-group">
+                                    <label>Session Timeout (minutes)</label>
+                                    <input type="number" id="sessionTimeout" value="60" min="15" max="480">
+                                </div>
+                                <div class="setting-group">
+                                    <label>Login Attempt Limit</label>
+                                    <input type="number" id="loginAttempts" value="5" min="3" max="10">
+                                </div>
+                                <div class="setting-group">
+                                    <label>IP Whitelist</label>
+                                    <textarea id="ipWhitelist" placeholder="Enter IP addresses, one per line"></textarea>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+            </div>
+        </main>
+    </div>
+
+    <!-- Modal for Application Details -->
+    <div id="applicationModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3>Application Details</h3>
+                <button class="modal-close">&times;</button>
+            </div>
+            <div class="modal-body" id="modalBody">
+                <!-- Dynamic content -->
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-success" id="approveApplication">
+                    <i class="fas fa-check"></i>
+                    Approve
+                </button>
+                <button class="btn btn-danger" id="rejectApplication">
+                    <i class="fas fa-times"></i>
+                    Reject
+                </button>
+                <button class="btn btn-secondary" id="closeModal">Close</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Toast Notifications -->
+    <div id="toastContainer" class="toast-container"></div>
+
+    <!-- Scripts -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.9.1/chart.min.js"></script>
+    <script src="/js/admin.js"></script>
+</body>
+</html>

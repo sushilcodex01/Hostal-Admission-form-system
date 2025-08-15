@@ -1,0 +1,505 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Navadaya Girls Hostal - Admission Form</title>
+    
+    <!-- External Libraries -->
+    <script src="js/jspdf.umd.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+    <script src="js/jspdf.plugin.autotable.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/signature_pad/4.1.7/signature_pad.umd.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcode/1.5.3/qrcode.min.js"></script>
+    
+    <!-- Styles -->
+    <link rel="stylesheet" href="css/styles.css">
+    <link rel="stylesheet" href="css/animations.css">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <div class="app-container">
+        <!-- Theme Toggle -->
+        <div class="theme-toggle">
+            <button id="themeToggle" class="theme-btn">
+                <i class="fas fa-moon"></i>
+            </button>
+        </div>
+
+        <!-- Header -->
+        <header class="app-header">
+            <div class="header-content">
+                <div class="logo-container">
+                    <img src="assets/logo.svg" alt="Navadaya Girls Hostal Logo" class="logo">
+                    <div class="header-text">
+                        <h1>Navadaya Girls Hostal</h1>
+                        <p>Admission Form</p>
+                    </div>
+                </div>
+            </div>
+        </header>
+
+        <!-- Progress Bar -->
+        <div class="progress-container">
+            <div class="progress-bar">
+                <div class="progress-fill" id="progressFill"></div>
+            </div>
+            <div class="progress-steps">
+                <div class="step active" data-step="1">
+                    <i class="fas fa-user"></i>
+                    <span>Student</span>
+                </div>
+                <div class="step" data-step="2">
+                    <i class="fas fa-users"></i>
+                    <span>Guardian</span>
+                </div>
+                <div class="step" data-step="3">
+                    <i class="fas fa-bed"></i>
+                    <span>Navadaya</span>
+                </div>
+                <div class="step" data-step="4">
+                    <i class="fas fa-id-card"></i>
+                    <span>ID Proof</span>
+                </div>
+                <div class="step" data-step="5">
+                    <i class="fas fa-camera"></i>
+                    <span>Photo</span>
+                </div>
+                <div class="step" data-step="6">
+                    <i class="fas fa-signature"></i>
+                    <span>Signature</span>
+                </div>
+                <div class="step" data-step="7">
+                    <i class="fas fa-check"></i>
+                    <span>Review</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- Form Container -->
+        <div class="form-container">
+            <form id="admissionForm">
+                
+                <!-- Step 1: Student Details -->
+                <div class="form-step active" id="step1">
+                    <div class="step-header">
+                        <h2>Student Details</h2>
+                        <p>Please provide your personal information</p>
+                    </div>
+                    
+                    <div class="form-grid">
+                        <div class="form-group">
+                            <label for="fullName">Full Name *</label>
+                            <input type="text" id="fullName" name="fullName" required>
+                            <span class="error-message"></span>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="dateOfBirth">Date of Birth *</label>
+                            <input type="date" id="dateOfBirth" name="dateOfBirth" required>
+                            <span class="error-message"></span>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="gender">Gender *</label>
+                            <select id="gender" name="gender" required>
+                                <option value="">Select Gender</option>
+                                <option value="male">Male</option>
+                                <option value="female">Female</option>
+                                <option value="other">Other</option>
+                            </select>
+                            <span class="error-message"></span>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="email">Email Address *</label>
+                            <input type="email" id="email" name="email" required>
+                            <span class="error-message"></span>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="phone">Phone Number *</label>
+                            <input type="tel" id="phone" name="phone" required>
+                            <span class="error-message"></span>
+                        </div>
+                        
+                        <div class="form-group full-width">
+                            <label for="address">Address *</label>
+                            <textarea id="address" name="address" rows="3" required></textarea>
+                            <span class="error-message"></span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Step 2: Parent/Guardian Details -->
+                <div class="form-step" id="step2">
+                    <div class="step-header">
+                        <h2>Parent/Guardian Details</h2>
+                        <p>Emergency contact information</p>
+                    </div>
+                    
+                    <div class="form-grid">
+                        <div class="form-group">
+                            <label for="guardianName">Guardian Name *</label>
+                            <input type="text" id="guardianName" name="guardianName" required>
+                            <span class="error-message"></span>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="relation">Relation *</label>
+                            <select id="relation" name="relation" required>
+                                <option value="">Select Relation</option>
+                                <option value="father">Father</option>
+                                <option value="mother">Mother</option>
+                                <option value="guardian">Guardian</option>
+                                <option value="other">Other</option>
+                            </select>
+                            <span class="error-message"></span>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="guardianPhone">Contact Number *</label>
+                            <input type="tel" id="guardianPhone" name="guardianPhone" required>
+                            <span class="error-message"></span>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="emergencyContact">Emergency Contact</label>
+                            <input type="tel" id="emergencyContact" name="emergencyContact">
+                            <span class="error-message"></span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Step 3: Hostel Details -->
+                <div class="form-step" id="step3">
+                    <div class="step-header">
+                        <h2>Hostal Details</h2>
+                        <p>Room allocation and stay duration</p>
+                    </div>
+                    
+                    <div class="form-grid">
+                        <div class="form-group">
+                            <label for="roomNumber">Room Number *</label>
+                            <select id="roomNumber" name="roomNumber" required>
+                                <option value="">Select Room</option>
+                                <option value="101">101 - Ground Floor</option>
+                                <option value="102">102 - Ground Floor</option>
+                                <option value="201">201 - First Floor</option>
+                                <option value="202">202 - First Floor</option>
+                                <option value="301">301 - Second Floor</option>
+                                <option value="308">308 - Second Floooor</option>
+                            </select>
+                            <span class="error-message"></span>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="admissionDate">Admission Date *</label>
+                            <input type="date" id="admissionDate" name="admissionDate" required>
+                            <span class="error-message"></span>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="stayDuration">Duration of Stay *</label>
+                            <select id="stayDuration" name="stayDuration" required>
+                                <option value="">Select Duration</option>
+                                <option value="1-semester">1 Semester</option>
+                                <option value="2-semester">2 Semesters</option>
+                                <option value="1-year">1 Year</option>
+                                <option value="2-years">2 Years</option>
+                                <option value="3-years">3 Years</option>
+                                <option value="4-years">4 Years</option>
+                            </select>
+                            <span class="error-message"></span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Step 4: ID Proof Upload -->
+                <div class="form-step" id="step4">
+                    <div class="step-header">
+                        <h2>ID Proof Upload</h2>
+                        <p>Upload or scan multiple identification documents (Max 5)</p>
+                    </div>
+                    
+                    <div class="upload-container">
+                        <div class="upload-options">
+                            <div class="upload-option">
+                                <input type="file" id="idProofFile" accept="image/*,.pdf" multiple style="display: none;">
+                                <button type="button" class="upload-btn" onclick="document.getElementById('idProofFile').click()">
+                                    <i class="fas fa-upload"></i>
+                                    Upload Files
+                                </button>
+                            </div>
+                            
+                            <div class="upload-option">
+                                <button type="button" class="scan-btn" id="scanIdBtn">
+                                    <i class="fas fa-camera"></i>
+                                    Scan with Camera
+                                </button>
+                            </div>
+                        </div>
+                        
+                        <div class="id-proof-count" id="idProofCount" style="display: none;">
+                            <span class="count-text">Documents uploaded: <span id="countNumber">0</span>/5</span>
+                        </div>
+                        
+                        <div class="multiple-preview-container" id="multipleIdProofPreview">
+                            <!-- Dynamic ID proof previews will be added here -->
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Step 5: Photo Capture -->
+                <div class="form-step" id="step5">
+                    <div class="step-header">
+                        <h2>Student Photo</h2>
+                        <p>Capture your photo for the admission form</p>
+                    </div>
+                    
+                    <div class="camera-container">
+                        <div class="camera-preview" id="cameraPreview">
+                            <video id="cameraVideo" autoplay playsinline></video>
+                            <canvas id="photoCanvas" style="display: none;"></canvas>
+                        </div>
+                        
+                        <div class="camera-controls">
+                            <button type="button" id="startCamera" class="camera-btn">
+                                <i class="fas fa-camera"></i>
+                                Start Camera
+                            </button>
+                            <button type="button" id="capturePhoto" class="camera-btn" style="display: none;">
+                                <i class="fas fa-camera"></i>
+                                Capture Photo
+                            </button>
+                            <button type="button" id="retakePhoto" class="camera-btn" style="display: none;">
+                                <i class="fas fa-redo"></i>
+                                Retake Photo
+                            </button>
+                        </div>
+                        
+                        <div class="photo-preview" id="photoPreview" style="display: none;">
+                            <img id="capturedPhoto" alt="Captured Photo">
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Step 6: Signature -->
+                <div class="form-step" id="step6">
+                    <div class="step-header">
+                        <h2>Digital Signature</h2>
+                        <p>Please sign below to complete your application</p>
+                    </div>
+                    
+                    <div class="signature-container">
+                        <canvas id="signaturePad" class="signature-pad"></canvas>
+                        <div class="signature-controls">
+                            <button type="button" id="clearSignature" class="signature-btn">
+                                <i class="fas fa-eraser"></i>
+                                Clear
+                            </button>
+                            <button type="button" id="undoSignature" class="signature-btn">
+                                <i class="fas fa-undo"></i>
+                                Undo
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Step 7: Review & Submit -->
+                <div class="form-step" id="step7">
+                    <div class="step-header">
+                        <h2>Review & Submit</h2>
+                        <p>Please review all information before submitting</p>
+                    </div>
+                    
+                    <div class="review-container">
+                        <div class="review-section student-section">
+                            <h3>Student Details</h3>
+                            <div class="review-grid">
+                                <div class="review-item">
+                                    <span class="label">Name:</span>
+                                    <span class="value" id="reviewFullName"></span>
+                                </div>
+                                <div class="review-item">
+                                    <span class="label">Date of Birth:</span>
+                                    <span class="value" id="reviewDob"></span>
+                                </div>
+                                <div class="review-item">
+                                    <span class="label">Gender:</span>
+                                    <span class="value" id="reviewGender"></span>
+                                </div>
+                                <div class="review-item">
+                                    <span class="label">Email:</span>
+                                    <span class="value" id="reviewEmail"></span>
+                                </div>
+                                <div class="review-item">
+                                    <span class="label">Phone:</span>
+                                    <span class="value" id="reviewPhone"></span>
+                                </div>
+                                <div class="review-item full-width">
+                                    <span class="label">Address:</span>
+                                    <span class="value" id="reviewAddress"></span>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="review-section guardian-section">
+                            <h3>Guardian Details</h3>
+                            <div class="review-grid">
+                                <div class="review-item">
+                                    <span class="label">Guardian Name:</span>
+                                    <span class="value" id="reviewGuardianName"></span>
+                                </div>
+                                <div class="review-item">
+                                    <span class="label">Relation:</span>
+                                    <span class="value" id="reviewRelation"></span>
+                                </div>
+                                <div class="review-item">
+                                    <span class="label">Contact:</span>
+                                    <span class="value" id="reviewGuardianPhone"></span>
+                                </div>
+                                <div class="review-item">
+                                    <span class="label">Emergency Contact:</span>
+                                    <span class="value" id="reviewEmergencyContact"></span>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="review-section hostel-section">
+                            <h3>Hostal Details</h3>
+                            <div class="review-grid">
+                                <div class="review-item">
+                                    <span class="label">Room Number:</span>
+                                    <span class="value" id="reviewRoomNumber"></span>
+                                </div>
+                                <div class="review-item">
+                                    <span class="label">Admission Date:</span>
+                                    <span class="value" id="reviewAdmissionDate"></span>
+                                </div>
+                                <div class="review-item">
+                                    <span class="label">Stay Duration:</span>
+                                    <span class="value" id="reviewStayDuration"></span>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="review-attachments">
+                            <h3>Attachments</h3>
+                            <div class="attachment-grid">
+                                <div class="attachment-item">
+                                    <span class="label">ID Proofs:</span>
+                                    <div class="attachment-preview" id="reviewIdProofs"></div>
+                                </div>
+                                <div class="attachment-item">
+                                    <span class="label">Photo:</span>
+                                    <div class="attachment-preview" id="reviewPhoto"></div>
+                                </div>
+                                <div class="attachment-item">
+                                    <span class="label">Signature:</span>
+                                    <div class="attachment-preview" id="reviewSignature"></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Navigation Buttons -->
+                <div class="navigation-buttons">
+                    <button type="button" id="prevBtn" class="nav-btn prev-btn" style="display: none;">
+                        <i class="fas fa-arrow-left"></i>
+                        Previous
+                    </button>
+                    
+                    <button type="button" id="saveDraftBtn" class="nav-btn draft-btn">
+                        <i class="fas fa-save"></i>
+                        Save Draft
+                    </button>
+                    
+                    <button type="button" id="nextBtn" class="nav-btn next-btn">
+                        Next
+                        <i class="fas fa-arrow-right"></i>
+                    </button>
+                    
+                    <button type="submit" id="submitBtn" class="nav-btn submit-btn" style="display: none;">
+                        <i class="fas fa-paper-plane"></i>
+                        Submit Application
+                    </button>
+                </div>
+            </form>
+        </div>
+
+        <!-- Loading Overlay -->
+        <div class="loading-overlay" id="loadingOverlay" style="display: none;">
+            <div class="loading-content">
+                <div class="spinner"></div>
+                <p id="loadingText">Processing your application...</p>
+            </div>
+        </div>
+
+        <!-- Success Modal -->
+        <div class="modal" id="successModal" style="display: none;">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h3><i class="fas fa-check-circle"></i> Application Submitted!</h3>
+                </div>
+                <div class="modal-body">
+                    <p>Your Navadaya Girls Hostal admission application has been successfully submitted to the administration.</p>
+                    <p>You will receive a confirmation message on Telegram shortly.</p>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="modal-btn" onclick="location.reload()">
+                        Submit Another Application
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Scripts -->
+    <script>
+        // Set Telegram configuration
+        window.TELEGRAM_BOT_TOKEN = '7693479991:AAF00-TVlY6tGmPbCcc9kvGNlNwm1yvQXZI';
+        window.TELEGRAM_CHAT_ID = '1691680798';
+        
+        // Global utility functions
+        window.showAppSuccess = function(message) {
+            console.log('Success:', message);
+        };
+        
+        window.showAppError = function(message) {
+            console.error('Error:', message);
+        };
+        
+        window.addToFormData = function(key, value) {
+            if (window.app) {
+                window.app.formData[key] = value;
+            }
+        };
+    </script>
+    <script src="js/storage.js"></script>
+    <script src="js/validation.js"></script>
+    <script src="js/camera.js"></script>
+    <script src="js/signature.js"></script>
+    <script src="js/pdf-generator.js"></script>
+    <script src="js/telegram.js"></script>
+    <script src="js/app.js"></script>
+    
+    <script>
+        // Initialize application when DOM is loaded
+        document.addEventListener('DOMContentLoaded', function() {
+            try {
+                // Initialize storage handler first
+                window.storageHandler = new StorageHandler();
+                
+                // Initialize main app
+                window.app = new HostelAdmissionApp();
+                console.log('Navadaya Girls Hostal App initialized successfully');
+            } catch (error) {
+                console.error('Failed to initialize app:', error);
+            }
+        });
+    </script>
+</body>
+</html>
